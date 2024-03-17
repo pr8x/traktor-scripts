@@ -83,6 +83,17 @@ class Track:
         # Fix POSIX path
         path  = path if path[1] == ':' else 'Volumes/' + path
 
+        musical_key = entry.find('MUSICAL_KEY')
+
+        if musical_key is not None:
+            camelotKeys = [
+                "08B", "03B", "10B", "05B", "12B", "07B", "02B", "09B",
+                "04B", "11B", "06B", "01B", "05A", "12A", "07A", "02A",
+                "09A", "04A", "11A", "06A", "01A", "08A", "03A", "10A"
+            ]
+
+            self.Tonality  = camelotKeys[int(musical_key.get("VALUE"))]
+
         self.cueMarkers  = []
         self.gridMarkers = []
         self.pk          = loc.get('VOLUME') + loc.get('DIR') + loc.get('FILE')
@@ -105,7 +116,7 @@ class Track:
             self.Rating    = info.get('RANKING', '0')
             self.Remixer   = info.get('REMIXER', '')
             self.Size      = str(int(info.get('FILESIZE', 0)) * 1024)
-            self.Tonality  = info.get('KEY', '')
+            # self.Tonality  = info.get('KEY', '')
             self.TotalTime = info.get('PLAYTIME', '0')
             self.Year      = info.get('RELEASE_DATE', '0').split('/')[0]
         if tempo is not None:
